@@ -12,6 +12,9 @@ MARKDOWN_URL = fr'\[(?:.+)\]\({URL}(?: "(?:.+)")?\)'
 
 MARKDOWN_URL_OR_URL = re.compile(fr"{MARKDOWN_URL}|{URL}")
 
+# More info: https://docs.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables
+REPO = os.getenv("GITHUB_REPOSITORY", "")
+WORKSPACE = os.getenv("GITHUB_WORKSPACE", "")
 EXIT_STATUS = 0
 
 
@@ -63,7 +66,7 @@ def get_urls(file: str) -> List[str]:
 markdown_files = get_markdown_files(os.getcwd())
 
 for markdown_file in markdown_files:
-    print(markdown_file)
+    print(markdown_file.replace(WORKSPACE, REPO))
 
     urls = get_urls(markdown_file)
 
