@@ -1,4 +1,4 @@
-# _Tou?_
+# _Tou.md_ (a.k.a. _Tou?_)
 
 A [Github Action](https://docs.github.com/en/actions) to find broken links in Markdown files.
 
