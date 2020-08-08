@@ -1,4 +1,4 @@
-name: Test Tou?
+name: Test Tou.md
 
 on:
   push:
@@ -10,5 +10,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Run Tou?
+      - name: Run Tou.md
         uses: joaopalmeiro/tou@master
