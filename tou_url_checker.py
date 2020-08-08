@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 from collections.abc import Iterable
 
 import requests
@@ -9,6 +10,10 @@ URL = r"(http[s]?:\/\/(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a
 MARKDOWN_URL = fr'\[(?:.+)\]\({URL}(?: "(?:.+)")?\)'
 
 MARKDOWN_URL_OR_URL = re.compile(fr"{MARKDOWN_URL}|{URL}")
+
+REPO = os.getenv("GITHUB_REPOSITORY")
+print(REPO)
+EXIT_STATUS = 0
 
 
 def irregular_flatify(lst):
@@ -40,7 +45,7 @@ def get_markdown_file_content(filename):
     return content
 
 
-def get_urls(files):
+def get_all_urls(files):
     urls = []
     for file in files:
         content = get_markdown_file_content(file)
@@ -48,18 +53,32 @@ def get_urls(files):
     return uniquify(irregular_flatify(urls))
 
 
-def main():
-    markdown_files = get_markdown_files(os.getcwd())
-    urls = get_urls(markdown_files)
+def get_urls(file):
+    content = get_markdown_file_content(file)
+    return uniquify(irregular_flatify(MARKDOWN_URL_OR_URL.findall(content)))
+
+
+print(os.getcwd())
+markdown_files = get_markdown_files(os.getcwd())
+
+for markdown_file in markdown_files:
+    print(markdown_file)
+
+    urls = get_urls(markdown_file)
 
     for url in urls:
         try:
             req = requests.get(url)
             if req.status_code == 200:
-                print("Good")
-        except requests.exceptions.RequestException:
+                print(f"✅ 200 · {url}")
+            elif req.status_code >= 400:
+                print(f"❌ {req.status_code} · {url}")
+                EXIT_STATUS = 1
+            else:
+                print(f"{req.status_code} · {url}")
+        except requests.exceptions.RequestException as e:
             # More info: https://requests.readthedocs.io/en/master/user/quickstart/#errors-and-exceptions
-            print("Bad")
+            print(f"❌ {e.__class__.__name__} · {url}")
+            EXIT_STATUS = 1
 
-
-main()
+sys.exit(EXIT_STATUS)

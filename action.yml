@@ -1,0 +1,9 @@
+name: "Tou?"
+author: "João Palmeiro"
+description: "A GitHub Action to find broken links in Markdown files."
+runs:
+  using: "docker"
+  image: "Dockerfile"
+branding:
+  icon: "external-link"
+  color: "gray-dark"
