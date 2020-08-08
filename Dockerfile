@@ -1,8 +1,5 @@
 FROM python:3.7
 
-ENV WORKON_HOME /root
-ENV PIPENV_PIPFILE /Pipfile
-
 ADD tou_url_checker.py /tou_url_checker.py
 ADD Pipfile /Pipfile
 ADD Pipfile.lock /Pipfile.lock
