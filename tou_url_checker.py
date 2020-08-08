@@ -18,6 +18,12 @@ WORKSPACE = os.getenv("GITHUB_WORKSPACE", "")
 EXIT_STATUS = 0
 
 
+class Colors:
+    BOLD = "\033[1m"
+    RESET = "\033[0m"
+    LIGHT_RED = "\033[1;31m"
+
+
 # Sequence: https://docs.python.org/3/glossary.html#term-sequence
 def irregular_flatify(lst: Sequence) -> Iterator[Sequence]:
     for el in lst:
@@ -66,7 +72,9 @@ def get_urls(file: str) -> List[str]:
 markdown_files = get_markdown_files(os.getcwd())
 
 for markdown_file in markdown_files:
-    print(markdown_file.replace(WORKSPACE, REPO))
+    approx_path = markdown_file.replace(WORKSPACE, REPO)
+
+    print(f"\n{Colors.BOLD}{approx_path}{Colors.RESET}")
 
     urls = get_urls(markdown_file)
 
@@ -76,13 +84,13 @@ for markdown_file in markdown_files:
             if req.status_code == 200:
                 print(f"✅ 200 · {url}")
             elif req.status_code >= 400:
-                print(f"❌ {req.status_code} · {url}")
+                print(f"❌ {Colors.LIGHT_RED}{req.status_code} · {url}{Colors.RESET}")
                 EXIT_STATUS = 1
             else:
                 print(f"{req.status_code} · {url}")
         except requests.exceptions.RequestException as e:
             # More info: https://requests.readthedocs.io/en/master/user/quickstart/#errors-and-exceptions
-            print(f"❌ {e.__class__.__name__} · {url}")
+            print(f"❌ {Colors.LIGHT_RED}{e.__class__.__name__} · {url}{Colors.RESET}")
             EXIT_STATUS = 1
 
 sys.exit(EXIT_STATUS)
