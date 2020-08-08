@@ -9,4 +9,4 @@ COPY Pipfile.lock /
 
 RUN pip install pipenv
 RUN pipenv install --deploy --ignore-pipfile
-ENTRYPOINT ["pipenv", "run", "python", "./tou_url_checker.py"]
+ENTRYPOINT ["pipenv", "run", "python", "/tou_url_checker.py"]
