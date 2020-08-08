@@ -1,4 +1,4 @@
-name: "Tou"
+name: "Estou"
 author: "João Palmeiro"
 description: "A GitHub Action to find broken links in Markdown files."
 runs:
