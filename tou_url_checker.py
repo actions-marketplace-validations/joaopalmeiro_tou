@@ -1,7 +1,8 @@
 import os
 import re
 import sys
-from collections.abc import Iterable
+from collections.abc import Sequence
+from typing import Iterator, List, Union
 
 import requests
 
@@ -11,41 +12,42 @@ MARKDOWN_URL = fr'\[(?:.+)\]\({URL}(?: "(?:.+)")?\)'
 
 MARKDOWN_URL_OR_URL = re.compile(fr"{MARKDOWN_URL}|{URL}")
 
-REPO = os.getenv("GITHUB_REPOSITORY")
-print(REPO)
 EXIT_STATUS = 0
 
 
-def irregular_flatify(lst):
+# Sequence: https://docs.python.org/3/glossary.html#term-sequence
+def irregular_flatify(lst: Sequence) -> Iterator[Sequence]:
     for el in lst:
         if el:
-            if isinstance(el, Iterable) and not isinstance(el, (str, bytes)):
+            # Sequence or Iterable
+            if isinstance(el, Sequence) and not isinstance(el, (str, bytes)):
                 yield from irregular_flatify(el)
             else:
                 yield el
 
 
-def uniquify(seq, keep_order=False):
+def uniquify(
+    seq: Union[Sequence, Iterator[Sequence]], keep_order: bool = False
+) -> list:
     return list(set(seq)) if not keep_order else list(dict.fromkeys(seq))
 
 
-def get_markdown_files(path):
+def get_markdown_files(path: str) -> List[str]:
     markdown_files = []
     for root, _, files in os.walk(path):
         for file in files:
             if file.endswith(".md"):
                 markdown_files.append(os.path.join(root, file))
-
     return markdown_files
 
 
-def get_markdown_file_content(filename):
+def get_markdown_file_content(filename: str) -> str:
     with open(filename, "r", encoding="utf-8") as file:
         content = file.read()
     return content
 
 
-def get_all_urls(files):
+def get_all_urls(files: List[str]) -> List[str]:
     urls = []
     for file in files:
         content = get_markdown_file_content(file)
@@ -53,12 +55,11 @@ def get_all_urls(files):
     return uniquify(irregular_flatify(urls))
 
 
-def get_urls(file):
+def get_urls(file: str) -> List[str]:
     content = get_markdown_file_content(file)
     return uniquify(irregular_flatify(MARKDOWN_URL_OR_URL.findall(content)))
 
 
-print(os.getcwd())
 markdown_files = get_markdown_files(os.getcwd())
 
 for markdown_file in markdown_files:
