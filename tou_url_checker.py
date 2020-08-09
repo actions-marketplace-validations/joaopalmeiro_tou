@@ -8,8 +8,9 @@ from typing import Iterator, List, Union
 import requests
 
 # `?:`: Non-capturing group
+# `$-_@` -> `#-_@`
 URL = r"(http[s]?:\/\/(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)"
-MARKDOWN_URL = fr'\[(?:.+)\]\({URL}(?: "(?:.+)")?\)'
+MARKDOWN_URL = fr'\[(?:[^\[]+)\]\({URL}(?: "(?:.+)")?\)'
 
 MARKDOWN_URL_OR_URL = re.compile(fr"{MARKDOWN_URL}|{URL}")
 
@@ -89,9 +90,35 @@ def get_all_urls(files: List[str]) -> List[str]:
     return uniquify(irregular_flatify(urls))
 
 
+def process_markdown_links_within_parentheses(
+    content: str, urls: List[str]
+) -> List[str]:
+    urls_markdown_aux = [
+        url.group() for url in re.compile(fr"\(*\[(.*?)\]\((.*?)\)+").finditer(content)
+    ]
+
+    double_check = [
+        (url_md, url)
+        for url_md in urls_markdown_aux
+        for url in urls
+        if url.endswith(")") and url in url_md
+    ]
+
+    for url_pair in double_check:
+        number_left_par = len(url_pair[0]) - len(url_pair[0].lstrip("("))
+
+        urls[urls.index(url_pair[1])] = url_pair[1][:-number_left_par]
+
+    return urls
+
+
 def get_urls(file: str) -> List[str]:
     content = get_markdown_file_content(file)
-    return uniquify(irregular_flatify(MARKDOWN_URL_OR_URL.findall(content)))
+
+    urls = uniquify(irregular_flatify(MARKDOWN_URL_OR_URL.findall(content)))
+    urls = process_markdown_links_within_parentheses(content, urls)
+
+    return urls
 
 
 markdown_files = get_markdown_files(os.getcwd())
