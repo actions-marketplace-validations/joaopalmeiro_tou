@@ -30,6 +30,11 @@ class Colors:
     LIGHT_RED = "\033[1;31m"
 
 
+def lprint(lst: Sequence) -> None:
+    """Pretty print `lst`."""
+    print(*lst, sep="\n")
+
+
 # Sequence: https://docs.python.org/3/glossary.html#term-sequence
 def irregular_flatify(lst: Sequence) -> Iterator[Sequence]:
     for el in lst:
@@ -93,8 +98,11 @@ def get_all_urls(files: List[str]) -> List[str]:
 def process_markdown_links_within_parentheses(
     content: str, urls: List[str]
 ) -> List[str]:
+    within_parentheses = fr"\(*\[(.*?)\]\((.*?)\)+"
+
+    # `url.group(2)`: URL only.
     urls_markdown_aux = [
-        url.group() for url in re.compile(fr"\(*\[(.*?)\]\((.*?)\)+").finditer(content)
+        url.group() for url in re.compile(within_parentheses).finditer(content)
     ]
 
     double_check = [
@@ -112,11 +120,33 @@ def process_markdown_links_within_parentheses(
     return urls
 
 
+def process_markdown_links_within_parentheses_v2(
+    content: str, urls: List[str]
+) -> List[str]:
+    within_parentheses = fr"\(*\[(.*?)\]\((.*?)\)+"
+
+    urls_markdown_aux = [
+        url.group(2) for url in re.compile(within_parentheses).finditer(content)
+    ]
+
+    double_check = [
+        (url_md, url)
+        for url_md in urls_markdown_aux
+        for url in urls
+        if url.endswith(")") and url.rstrip(")") in url_md
+    ]
+
+    for url_pair in double_check:
+        urls[urls.index(url_pair[1])] = url_pair[0]
+
+    return urls
+
+
 def get_urls(file: str) -> List[str]:
     content = get_markdown_file_content(file)
 
     urls = uniquify(irregular_flatify(MARKDOWN_URL_OR_URL.findall(content)))
-    urls = process_markdown_links_within_parentheses(content, urls)
+    urls = process_markdown_links_within_parentheses_v2(content, urls)
 
     return urls
 
