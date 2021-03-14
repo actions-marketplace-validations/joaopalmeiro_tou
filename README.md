@@ -20,7 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run Tou.md
-        uses: joaopalmeiro/tou@v0.2.2
+        uses: joaopalmeiro/tou@v0.2.3
+        with:
+          ignore-403-forbidden: false
 ```
 
 ## Acknowledgments

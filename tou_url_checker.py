@@ -37,8 +37,9 @@ REPO = os.getenv("GITHUB_REPOSITORY", "")
 WORKSPACE = os.getenv("GITHUB_WORKSPACE", "")
 
 # GitHub creates an environment variable for the input with the name `INPUT_<VARIABLE_NAME>`
+# os.environ["INPUT_IGNORE-403-FORBIDDEN"] = "false"
 IGNORE_403_FORBIDDEN = BOOLEAN_VALUES[
-    os.getenv(get_gh_input_name("ignore-403-forbidden").lower(), "false")
+    os.getenv(get_gh_input_name("ignore-403-forbidden"), "false").lower()
 ]
 
 # EXIT_STATUS = 0
