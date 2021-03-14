@@ -10,3 +10,4 @@ https://github.com/paramt/url-checker
 https://github.com/andrewp-as-is/markdown-link-extractor.py
 https://jex.im/regulex/
 https://github.com/medialab/ural
+https://github.com/Jtalk/url-health-check-action

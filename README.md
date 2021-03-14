@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run Tou.md
-        uses: joaopalmeiro/tou@v0.2.1
+        uses: joaopalmeiro/tou@v0.2.2
 ```
 
 ## Acknowledgments
@@ -32,6 +32,7 @@ jobs:
 - https://github.com/andrewp-as-is/markdown-link-extractor.py
 - https://jex.im/regulex/ (visualization)
 - https://github.com/medialab/ural
+- https://github.com/Jtalk/url-health-check-action
 
 ## Development
 

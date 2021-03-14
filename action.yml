@@ -1,6 +1,13 @@
 name: "Tou.md"
 author: "João Palmeiro"
 description: "A GitHub Action to find broken links in Markdown files."
+inputs:
+  ignore-403-forbidden:
+    # More info: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+    description: "Ignore the HTTP 403 Forbidden client error status response code and don't count the respective URLs."
+    required: false
+    # String: https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#inputs
+    default: "false"
 runs:
   using: "docker"
   image: "Dockerfile"

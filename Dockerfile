@@ -1,6 +1,6 @@
 FROM python:3.7
 
-LABEL version="0.2.1" \ 
+LABEL version="0.2.2" \ 
     maintainer="jm.palmeiro@campus.fct.unl.pt" \ 
     description="Tou.md, a Github Action to find broken links in Markdown files."
 
