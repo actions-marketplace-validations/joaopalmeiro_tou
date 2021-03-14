@@ -7,6 +7,7 @@ verify_ssl = true
 
 [packages]
 requests = "*"
+mistune = "==2.0.0rc1"
 
 [requires]
 python_version = "3.7"
