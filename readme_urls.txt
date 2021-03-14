@@ -1,0 +1,9 @@
+https://en.wiktionary.org/wiki/apheresis
+https://en.wikipedia.org/wiki/Markdown
+https://www.flip.pt/Duvidas-Linguisticas/Duvida-Linguistica/DID/1878
+https://regex101.com/
+https://stackoverflow.com/questions/63143360/how-do-you-use-pipenv-in-a-github-action
+https://docs.github.com/en/actions
+https://stackoverflow.com/questions/19747371/python-exit-commands-why-so-many-and-when-should-each-be-used
+https://en.wiktionary.org/wiki/estar#Portuguese
+https://github.com/paramt/url-checker
