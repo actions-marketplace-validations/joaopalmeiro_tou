@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run Tou.md
-        uses: joaopalmeiro/tou@v0.2.0
+        uses: joaopalmeiro/tou@v0.2.1
 ```
 
 ## Acknowledgments
@@ -29,6 +29,9 @@ jobs:
 - https://stackoverflow.com/questions/19747371/python-exit-commands-why-so-many-and-when-should-each-be-used
 - https://stackoverflow.com/questions/63143360/how-do-you-use-pipenv-in-a-github-action
 - https://regex101.com/
+- https://github.com/andrewp-as-is/markdown-link-extractor.py
+- https://jex.im/regulex/ (visualization)
+- https://github.com/medialab/ural
 
 ## Development
 

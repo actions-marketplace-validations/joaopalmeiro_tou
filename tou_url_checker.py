@@ -2,10 +2,11 @@ import os
 import re
 import sys
 from functools import partial
-from typing import List, Set
+from typing import List
 
 import mistune
 import requests
+from mistune.plugins.extra import URL_LINK_PATTERN
 
 # Constants
 # More info: https://docs.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables
@@ -16,6 +17,7 @@ WORKSPACE = os.getenv("GITHUB_WORKSPACE", "")
 LINK_STATUS = dict(ok=0, not_ok=0)
 
 TAB = " " * 4
+URL_PATTERN = re.compile(URL_LINK_PATTERN)
 
 
 class Colors:
@@ -46,11 +48,15 @@ def get_markdown_file_content(filename: str) -> str:
     return content
 
 
-def get_urls(file: str, parser: mistune.Markdown) -> Set[str]:
+def get_urls(file: str, parser: mistune.Markdown) -> List[str]:
     content = get_markdown_file_content(file)
     html = parser(content)
 
-    urls = set(re.findall(r'href=[\'"]?([^\'" >]+)', html))
+    # Group #1 — None of: '" >
+    # Includes anchor links
+    links = set(re.findall(r'href=[\'"]?([^\'" >]+)', html))
+
+    urls = list(filter(URL_PATTERN.match, links))
 
     return urls
 

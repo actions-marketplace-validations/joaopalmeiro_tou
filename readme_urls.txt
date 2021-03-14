@@ -7,3 +7,6 @@ https://docs.github.com/en/actions
 https://stackoverflow.com/questions/19747371/python-exit-commands-why-so-many-and-when-should-each-be-used
 https://en.wiktionary.org/wiki/estar#Portuguese
 https://github.com/paramt/url-checker
+https://github.com/andrewp-as-is/markdown-link-extractor.py
+https://jex.im/regulex/
+https://github.com/medialab/ural
