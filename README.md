@@ -38,4 +38,13 @@ jobs:
 
 ## Development
 
+- `pipenv install --python 3.7` and/or `pipenv shell` + `python tou_url_checker.py`.
 - Update the version in the `Dockerfile` and in the `README.md` file.
+
+## Notes
+
+- Check the path to the virtual environment: `pipenv --venv`.
+- [deadlink](https://github.com/nschloe/deadlink) (CLI):
+  - `deadlink check README.md`.
+  - `deadlink check --help`.
+- `pyenv install 3.7.12`.
